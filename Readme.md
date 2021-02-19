@@ -1,4 +1,4 @@
-### GETNET SDK PHP - API v1
+### GETNET SDK PHP - API v1.0.1
 E-commerce
 
 Todos os passos e processos referentes à integração com o sistema de captura e autorização de transações financeiras da Getnet via as funcionalidades da API.
