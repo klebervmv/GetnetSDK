@@ -7,20 +7,78 @@ Todos os passos e processos referentes à integração com o sistema de captura 
 * https://api.getnet.com.br/v1/doc/api
 
 #### Composer
+
+```bash
+"klebervmv/getnet-sdk": "1.0.*"
 ```
-$ composer require "brunopazz/getnet-sdk @dev"
+or run
+
+```bash
+composer require klebervmv/getnet-sdk
 ```
-#### Exemplo Autorização com cartão de crédito MasterCard R$10,00 em 2x 
+#### Recuperar bandeira do cartão de credito
 
 ```php
+
+//o parametro inserido dentro do Bin() são os 6 primeiros digitos do cartão
 // Autenticação da API (client_id, client_secret, env)
-$getnet = new Getnet("c076e924-a3fe-492d-a41f-1f8de48fb4b1", "bc097a2f-28e0-43ce-be92-d846253ba748", "SANDBOX");
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
+$getnet->Bin("515590");
+//Bandeira do cartão
+$getnet->getBrand();
+```
+
+#### Salvar Cartão de credito na getnet
+```php
+// Autenticação da API (client_id, client_secret, env)
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
+//$numCard = numero do cartão de crédito
+//$clientId = id do cliente no ecommerce
+//$verify = true ou false informa se é para executar uma verificação se o cartão está ativo
+//$brand = bandeira do cartão
+//$expirationMonth = mês do vencimento
+//$expirationYear = ano do vencimento
+//$holderName = nome como no cartão
+//$cvv = cvv
+
+$card = (new Card(new Token($numCard, $clientId, $getnet)))
+                ->setVerifyCard($verify)
+                ->setBrand($brand)
+                ->setExpirationMonth($expirationMonth)
+                ->setExpirationYear($expirationYear)
+                ->setCardholderName($holderName)
+                ->setSecurityCode($cvv);
+
+        $saveCard = $getnet->saveCard($card, $clientId);
+
+ $cardId = $saveCard->getCardId();
+
+```
+#### Recuperar dados do cartão salvo
+```php
+//$cardId = id do cartão salvo na getnet
+// Autenticação da API (client_id, client_secret, env)
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
+$response = $getnet->getSavedCard($cardId);
+
+//retorno
+ $response->getLast_four();
+ $response->getNumberToken();
+ $response->getExpiration_month();
+ $response->getExpiration_year();
+ $response->getBrand();
+```
+
+#### Exemplo Autorização com cartão de crédito MasterCard R$10,00 em 2x
+```php
+// Autenticação da API (client_id, client_secret, env)
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
 
 // Inicia uma transação
 $transaction = new Transaction();
 
 // Dados do pedido - Transação
-$transaction->setSellerId("1955a180-2fa5-4b65-8790-2ba4182a94cb");
+$transaction->setSellerId("saler_id");
 $transaction->setCurrency("BRL");
 $transaction->setAmount("1000");
 
@@ -41,15 +99,15 @@ $transaction->Credit("")
         ->setBrand("MasterCard")
         ->setExpirationMonth("12")
         ->setExpirationYear("20")
-        ->setCardholderName("Bruno Paz")
+        ->setCardholderName("Kleberton Vilela")
         ->setSecurityCode("123");
 // Dados pessoais do comprador
 $transaction->Customer("customer_21081826")
     ->setDocumentType("CPF")
     ->setEmail("customer@email.com.br")
-    ->setFirstName("Bruno")
+    ->setFirstName("Kleberton")
     ->setLastName("Paz")
-    ->setName("Bruno Paz")
+    ->setName("Kleberton Vilela")
     ->setPhoneNumber("5551999887766")
     ->setDocumentNumber("12345678912")
     ->BillingAddress("90230060")
@@ -80,7 +138,7 @@ $transaction->Shippings("")
 $transaction->Order("123456")
     ->setProductType("service")
     ->setSalesTax("0");
-$transaction->setSellerId("1955a180-2fa5-4b65-8790-2ba4182a94cb");
+$transaction->setSellerId("saler_id");
 $transaction->setCurrency("BRL");
 $transaction->setAmount("1000");
 
@@ -97,7 +155,7 @@ $response->getStatus();
 #### CONFIRMA PAGAMENTO (CAPTURA)
 ```php
 // Autenticação da API (client_id, client_secret, env)
-$getnet = new Getnet("c076e924-a3fe-492d-a41f-1f8de48fb4b1", "bc097a2f-28e0-43ce-be92-d846253ba748", "SANDBOX");
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
 
 // Processa a confirmação da autorização
 $capture = $getnet->AuthorizeConfirm("PAYMENT_ID");
@@ -109,7 +167,7 @@ $capture->getStatus();
 #### CANCELA PAGAMENTO (CRÉDITO e DÉBITO)
 ```php
 // Autenticação da API (client_id, client_secret, env)
-$getnet = new Getnet("c076e924-a3fe-492d-a41f-1f8de48fb4b1", "bc097a2f-28e0-43ce-be92-d846253ba748", "SANDBOX");
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
 
 $cancel = $getnet->AuthorizeCancel("[PAYMENT_ID]", [AMOUNT]);
 
@@ -120,9 +178,10 @@ $cancel->getStatus();
 #### BOLETO BANCÁRIO (SANTANDER)
 
 ```php
-$getnet = new Getnet("c076e924-a3fe-492d-a41f-1f8de48fb4b1", "bc097a2f-28e0-43ce-be92-d846253ba748", "SANDBOX");
+// Autenticação da API (client_id, client_secret, env)
+$getnet = new Getnet("client_id","client_secret", "SANDBOX");
 $transaction = new Transaction();
-$transaction->setSellerId("1955a180-2fa5-4b65-8790-2ba4182a94cb");
+$transaction->setSellerId("saler_id");
 $transaction->setCurrency("BRL");
 $transaction->setAmount("1000");
 
@@ -134,8 +193,8 @@ $transaction->Boleto("000001946598")
 
 $transaction->Customer()
     ->setDocumentType("CPF")
-    ->setFirstName("Bruno")
-    ->setName("Bruno Paz")
+    ->setFirstName("Kleberton")
+    ->setName("Kleberton Vilela")
     ->setDocumentNumber("12345678912")
     ->BillingAddress("90230060")
     ->setCity("São Paulo")
