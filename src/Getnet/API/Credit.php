@@ -23,7 +23,7 @@ class Credit implements \JsonSerializable
     /**
      * @var
      */
-    private $dynamic_mcc;
+//    private $dynamic_mcc;
     /**
      * @var
      */
@@ -48,6 +48,7 @@ class Credit implements \JsonSerializable
      * @var
      */
     private $card;
+
 
     /**
      * Credit constructor.
@@ -154,21 +155,21 @@ class Credit implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getDynamicMcc()
-    {
-        return $this->dynamic_mcc;
-    }
+//    public function getDynamicMcc()
+//    {
+//        return $this->dynamic_mcc;
+//    }
 
     /**
      * @param mixed $dynamic_mcc
      * @return Credit
      */
-    public function setDynamicMcc($dynamic_mcc)
-    {
-        $this->dynamic_mcc = $dynamic_mcc;
-
-        return $this;
-    }
+//    public function setDynamicMcc($dynamic_mcc)
+//    {
+//        $this->dynamic_mcc = $dynamic_mcc;
+//
+//        return $this;
+//    }
 
     /**
      * @return mixed
@@ -245,6 +246,8 @@ class Credit implements \JsonSerializable
 
         return $this;
     }
+
+
 
 
 }

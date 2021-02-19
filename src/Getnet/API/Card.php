@@ -1,60 +1,67 @@
 <?php
+
 namespace Getnet\API;
-    /**
-     * Created by PhpStorm.
-     * User: brunopaz
-     * Date: 09/07/2018
-     * Time: 01:46
-     */
+
+/**
+ * Created by PhpStorm.
+ * User: brunopaz
+ * Date: 09/07/2018
+ * Time: 01:46
+ */
 
 /**
  * Class Card
  * @package Getnet\API
  */
-class Card implements \JsonSerializable
-{
+class Card implements \JsonSerializable {
+
     /**
      * @var
      */
     private $brand;
+
     /**
      * @var
      */
     private $cardholder_name;
+
     /**
      * @var
      */
     private $expiration_month;
+
     /**
      * @var
      */
     private $expiration_year;
+
     /**
      * @var
      */
     private $number_token;
+
     /**
      * @var
      */
     private $security_code;
 
+    /**
+     * @var
+     */
+    private $verify_card;
 
     /**
      * Card constructor.
      * @param Token $card
      */
-    public function __construct(Token $card)
-    {
-        $this->setNumberToken($card);
+    public function __construct(string $token) {
+        $this->setNumberToken($token);
     }
-
 
     /**
      * @return array
      */
-
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
 
         $vars = get_object_vars($this);
         $vars_clear = array_filter($vars, function ($value) {
@@ -67,8 +74,7 @@ class Card implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getSecurityCode()
-    {
+    public function getSecurityCode() {
         return $this->security_code;
     }
 
@@ -76,9 +82,8 @@ class Card implements \JsonSerializable
      * @param mixed $security_code
      * @return Card
      */
-    public function setSecurityCode($security_code)
-    {
-        $this->security_code = (string)$security_code;
+    public function setSecurityCode($security_code) {
+        $this->security_code = (string) $security_code;
 
         return $this;
     }
@@ -86,8 +91,7 @@ class Card implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getBrand()
-    {
+    public function getBrand() {
         return $this->brand;
     }
 
@@ -95,9 +99,8 @@ class Card implements \JsonSerializable
      * @param mixed $brand
      * @return Card
      */
-    public function setBrand($brand)
-    {
-        $this->brand = (string)$brand;
+    public function setBrand($brand) {
+        $this->brand = (string) $brand;
 
         return $this;
     }
@@ -105,8 +108,7 @@ class Card implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getCardholderName()
-    {
+    public function getCardholderName() {
         return $this->cardholder_name;
     }
 
@@ -114,9 +116,8 @@ class Card implements \JsonSerializable
      * @param mixed $cardholder_name
      * @return Card
      */
-    public function setCardholderName($cardholder_name)
-    {
-        $this->cardholder_name = (string)$cardholder_name;
+    public function setCardholderName($cardholder_name) {
+        $this->cardholder_name = (string) $cardholder_name;
 
         return $this;
     }
@@ -124,8 +125,7 @@ class Card implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getExpirationMonth()
-    {
+    public function getExpirationMonth() {
         return $this->expiration_month;
     }
 
@@ -133,9 +133,8 @@ class Card implements \JsonSerializable
      * @param mixed $expiration_month
      * @return Card
      */
-    public function setExpirationMonth($expiration_month)
-    {
-        $this->expiration_month = (string)$expiration_month;
+    public function setExpirationMonth($expiration_month) {
+        $this->expiration_month = (string) $expiration_month;
 
         return $this;
     }
@@ -143,8 +142,7 @@ class Card implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getExpirationYear()
-    {
+    public function getExpirationYear() {
         return $this->expiration_year;
     }
 
@@ -152,9 +150,8 @@ class Card implements \JsonSerializable
      * @param mixed $expiration_year
      * @return Card
      */
-    public function setExpirationYear($expiration_year)
-    {
-        $this->expiration_year = (string)$expiration_year;
+    public function setExpirationYear($expiration_year) {
+        $this->expiration_year = (string) $expiration_year;
 
         return $this;
     }
@@ -162,22 +159,27 @@ class Card implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getNumberToken()
-    {
+    public function getNumberToken() {
         return $this->number_token;
     }
-
 
     /**
      * @param Token $token
      * @return $this
      */
-    public function setNumberToken(Token $token)
-    {
-        $this->number_token = (string)$token->getNumberToken();
+    public function setNumberToken(string $token) {
+        $this->number_token = $token;
 
         return $this;
     }
 
+    /**
+     * @param bool $verify_card
+     * @return Credit
+     */
+    public function setVerifyCard(bool $verify_card): Card {
+        $this->verify_card = $verify_card;
+        return $this;
+    }
 
 }

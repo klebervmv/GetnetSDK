@@ -105,10 +105,13 @@ class Request
             curl_setopt($curl, CURLOPT_USERPWD, $credentials->getClientId() . ":" . $credentials->getClientSecret());
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+        }elseif ($method == 'GET') {
+            $defaultCurlOptions[ CURLOPT_HTTPHEADER ][] = 'Authorization: Bearer ' . $credentials->getAuthorizationToken();
         }
+        
         curl_setopt($curl, CURLOPT_ENCODING, "");
         curl_setopt_array($curl, $defaultCurlOptions);
-
+        
         if ($credentials->debug === true) {
 
             print "\n\nJSON REQUEST\n";
