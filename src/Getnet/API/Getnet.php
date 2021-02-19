@@ -8,6 +8,8 @@ namespace Getnet\API;
  * Date: 09/07/2018
  * Time: 01:26
  * Documentation https://api.getnet.com.br/v1/doc/api
+ * Atualizado por Klebervmv
+ * Date: 19/02/2021
  */
 
 /**
@@ -15,7 +17,6 @@ namespace Getnet\API;
  * @package Getnet\API
  */
 class Getnet {
-
     /**
      * @var bool
      */
@@ -56,7 +57,6 @@ class Getnet {
 
         return $request->auth($this);
     }
-
     /**
      * @param boolean $debug
      */
@@ -105,7 +105,6 @@ class Getnet {
     public function setClientSecret($client_secret) {
         $this->client_secret = $client_secret;
     }
-
     /**
      * @return mixed
      */
