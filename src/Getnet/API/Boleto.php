@@ -27,7 +27,6 @@ class Boleto implements \JsonSerializable
         $this->our_number = $our_number;
     }
 
-
     public function jsonSerialize()
     {
         return get_object_vars($this);
